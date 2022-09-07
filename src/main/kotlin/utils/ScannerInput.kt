@@ -41,6 +41,7 @@ object ScannerInput {
      * @param prompt  The information printed to the console for the user to read
      * @return The number read from the user and verified as a double.
      */
+    @JvmStatic
     fun readNextDouble(prompt: String?): Double {
         do {
             try {
