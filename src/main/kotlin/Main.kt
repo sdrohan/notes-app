@@ -24,7 +24,7 @@ fun mainMenu() : Int {
          > ----------------------------------
          > | NOTE MENU                      |
          > |   1) Add a note                |
-         > |   2) List notes                |
+         > |   2) List all notes            |
          > |   3) Update a note             |
          > |   4) Delete a note             |
          > |   5) Archive a note            |
@@ -69,37 +69,14 @@ fun addNote(){
 }
 
 fun listNotes(){
-    if (noteAPI.numberOfNotes() > 0) {
-        val option = readNextInt(
-            """
-                  > --------------------------------
-                  > |   1) View ALL notes          |
-                  > |   2) View ACTIVE notes       |
-                  > |   3) View ARCHIVED notes     |
-                  > --------------------------------
-         > ==>> """.trimMargin(">"))
-
-        when (option) {
-            1 -> listAllNotes();
-            2 -> listActiveNotes();
-            3 -> listArchivedNotes();
-            else -> println("Invalid option entered: " + option);
-        }
-    } else {
-        println("Option Invalid - No notes stored");
-    }
-}
-
-fun listAllNotes() {
+    //logger.info { "listNotes() function invoked" }
     println(noteAPI.listAllNotes())
 }
+
 fun listActiveNotes() {
     println(noteAPI.listActiveNotes())
 }
 
-fun listArchivedNotes() {
-    println(noteAPI.listArchivedNotes())
-}
 fun updateNote() {
     //logger.info { "updateNotes() function invoked" }
     listNotes()
