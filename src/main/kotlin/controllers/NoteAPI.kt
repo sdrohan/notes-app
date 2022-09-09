@@ -99,6 +99,11 @@ class NoteAPI(serializerType: Serializer){
             .toInt()
     }
 
+    fun searchByTitle(searchString : String) =
+        notes.filter { note -> note.noteTitle.contains(searchString, ignoreCase = true)}
+            .joinToString (separator = "\n") {
+                    note ->  notes.indexOf(note).toString() + ": " + note.toString() }
+
     fun findNote(index: Int): Note? {
         return if (isValidListIndex(index, notes)) {
             notes[index]
