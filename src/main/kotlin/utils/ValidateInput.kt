@@ -1,7 +1,7 @@
 package utils
 
 import utils.ScannerInput.readNextInt
-import java.util.*
+import java.util.Scanner
 
 object ValidateInput {
 
@@ -21,9 +21,9 @@ object ValidateInput {
 
     @JvmStatic
     fun readValidPriority(prompt: String?): Int {
-        var input =  readNextInt(prompt)
+        var input = readNextInt(prompt)
         do {
-            if (Utilities.validRange(input, 1 ,5))
+            if (Utilities.validRange(input, 1, 5))
                 return input
             else {
                 print("Invalid priority $input.")
@@ -31,5 +31,4 @@ object ValidateInput {
             }
         } while (true)
     }
-
 }
