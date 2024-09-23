@@ -48,6 +48,26 @@ class NoteAPI {
         }
     }
 
+    fun listNotesBySelectedPriority(priority: Int): String {
+        return if (notes.isEmpty()) {
+            "No notes stored"
+        } else {
+            var listOfNotes = ""
+            for (i in notes.indices) {
+                if (notes[i].notePriority == priority) {
+                    listOfNotes +=
+                        """$i: ${notes[i]}
+                        """.trimIndent()
+                }
+            }
+            if (listOfNotes.equals("")) {
+                "No notes with priority: $priority"
+            } else {
+                "${numberOfNotesByPriority(priority)} notes with priority $priority: $listOfNotes"
+            }
+        }
+    }
+
     fun numberOfNotes(): Int {
         return notes.size
     }
@@ -68,6 +88,17 @@ class NoteAPI {
         var counter = 0
         for (note in notes) {
             if (!note.isNoteArchived) {
+                counter++
+            }
+        }
+        return counter
+    }
+
+    fun numberOfNotesByPriority(priority: Int): Int {
+        //return notes.stream().filter { p: Note -> p.notePriority == priority }.count().toInt()
+        var counter = 0
+        for (note in notes) {
+            if (note.notePriority == priority) {
                 counter++
             }
         }
