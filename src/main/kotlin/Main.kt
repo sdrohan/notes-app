@@ -2,6 +2,7 @@
 import controllers.NoteAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Note
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import utils.readNextInt
 import utils.readNextLine
@@ -9,7 +10,8 @@ import java.io.File
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
+//private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
+private val noteAPI = NoteAPI(JSONSerializer(File("notes.json")))
 
 fun main() {
     runMenu()
