@@ -155,6 +155,8 @@ class NoteAPITest {
             assertFalse(priority1String.contains("learning kotlin"))
             assertFalse(priority1String.contains("code app"))
             assertFalse(priority1String.contains("test app"))
+
+
             val priority4String = populatedNotes!!.listNotesBySelectedPriority(4).lowercase()
             assertTrue(priority4String.contains("2 note"))
             assertTrue(priority4String.contains("priority 4"))
@@ -164,7 +166,6 @@ class NoteAPITest {
             assertFalse(priority4String.contains("learning kotlin"))
             assertFalse(priority4String.contains("summer holiday"))
         }
-
     }
 
     @Nested
