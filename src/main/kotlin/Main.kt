@@ -4,8 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Note
 import persistence.JSONSerializer
 import persistence.XMLSerializer
-import utils.readNextInt
-import utils.readNextLine
+import utils.*
 import java.io.File
 import java.lang.System.exit
 
@@ -81,8 +80,11 @@ fun listNotes() {
 
 fun addNote(){
     val noteTitle = readNextLine("Enter a title for the note: ")
-    val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
-    val noteCategory = readNextLine("Enter a category for the note: ")
+    //val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+    //val noteCategory = readNextLine("Enter a category for the note: ")
+    val notePriority = readValidPriority("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+    val noteCategory = readValidCategory("Enter a category for the note from ${categories}: ")
+
     val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false))
 
     if (isAdded) {
@@ -100,8 +102,10 @@ fun updateNote() {
         val indexToUpdate = readNextInt("Enter the index of the note to update: ")
         if (noteAPI.isValidIndex(indexToUpdate)) {
             val noteTitle = readNextLine("Enter a title for the note: ")
-            val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
-            val noteCategory = readNextLine("Enter a category for the note: ")
+            //val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+            //val noteCategory = readNextLine("Enter a category for the note: ")
+            val notePriority = readValidPriority("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+            val noteCategory = readValidCategory("Enter a category for the note from ${categories}: ")
 
             //pass the index of the note and the new note details to NoteAPI for updating and check for success.
             if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false))){
