@@ -39,12 +39,10 @@ fun readNextFloat(prompt: String?): Float {
     } while (true)
 }
 
-
 fun readNextLine(prompt: String?): String {
     print(prompt)
     return readln()
 }
-
 
 fun readNextChar(prompt: String?): Char {
     do {

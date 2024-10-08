@@ -3,9 +3,9 @@ package utils
 fun readValidCategory(prompt: String?): String {
     var input = readNextLine(prompt)
     do {
-        if (isValidCategory(input))
+        if (isValidCategory(input)) {
             return input
-        else {
+        } else {
             print("Invalid category $input.  Please try again: ")
             input = readNextLine(prompt)
         }
@@ -15,9 +15,9 @@ fun readValidCategory(prompt: String?): String {
 fun readValidPriority(prompt: String?): Int {
     var input = readNextInt(prompt)
     do {
-        if (validRange(input, 1, 5))
+        if (validRange(input, 1, 5)) {
             return input
-        else {
+        } else {
             print("Invalid priority $input.")
             input = readNextInt(prompt)
         }
