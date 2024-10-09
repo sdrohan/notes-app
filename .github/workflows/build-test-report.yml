@@ -62,7 +62,7 @@ jobs:
     steps:
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it 
-      - uses: actions/checkout@v4.4.2
+      - uses: actions/checkout@v4
       
       # Runs the Gradle dokkaHtml task
       - name: Dokka with Gradle
