@@ -17,4 +17,17 @@ class NoteService {
         return notes
     }
 
+    fun deleteNote(id: Int): Boolean {
+        return notes.removeIf { it.id == id }
+    }
+
+    fun updateNote(id: Int, updated: Note): Boolean {
+        val index = notes.indexOfFirst { it.id == id }
+        if (index != -1) {
+            notes[index] = updated
+            return true
+        }
+        return false
+    }
+
 }
