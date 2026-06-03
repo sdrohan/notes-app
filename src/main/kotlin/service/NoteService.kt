@@ -3,13 +3,14 @@ package service
 import model.Note
 
 class NoteService {
-    
+
     private val notes = ArrayList<Note>()
     private var lastId = 0
     private fun getId(): Int = lastId++
 
     fun addNote(note: Note) {
         note.id = getId()
+        note.isArchived = false
         notes.add(note)
     }
 
@@ -24,6 +25,7 @@ class NoteService {
     fun updateNote(id: Int, updated: Note): Boolean {
         val index = notes.indexOfFirst { it.id == id }
         if (index != -1) {
+            updated.id = id
             notes[index] = updated
             return true
         }
