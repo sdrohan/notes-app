@@ -13,6 +13,21 @@ fun main(){
     runMenu()
 }
 
+fun runMenu (){
+    var input : Int
+    do {
+        input = mainMenu()
+        when(input) {
+            1 -> addNote()
+            2 -> listNotes()
+            3 -> updateNote()
+            4 -> deleteNote()
+            0 -> logger.info { "Notes App Exiting" }
+            else -> println("Invalid Option")
+        }
+    } while (input != 0)
+}
+
 fun mainMenu(): Int {
     print(""" 
          > ----------------------------------
@@ -28,21 +43,6 @@ fun mainMenu(): Int {
          > ----------------------------------
          > """.trimMargin(">"))
     return readNextInt("==>> ")
-}
-
-fun runMenu (){
-    var input : Int
-    do {
-        input = mainMenu()
-        when(input) {
-            1 -> addNote()
-            2 -> listNotes()
-            3 -> updateNote()
-            4 -> deleteNote()
-            0 -> logger.info { "Notes App Exiting" }
-            else -> println("Invalid Option")
-        }
-    } while (input != 0)
 }
 
 fun addNote(){

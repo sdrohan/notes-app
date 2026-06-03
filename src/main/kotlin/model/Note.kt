@@ -12,5 +12,4 @@ data class Note(
         val status = if (isArchived) "ARCHIVED" else "ACTIVE"
         return "$id: $title | $body | Priority: $priority | Category: $category [$status]"
     }
-
 }

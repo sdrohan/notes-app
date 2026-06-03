@@ -3,7 +3,7 @@ package service
 import model.Note
 
 class NoteService {
-
+    
     private val notes = ArrayList<Note>()
     private var lastId = 0
     private fun getId(): Int = lastId++
@@ -29,5 +29,4 @@ class NoteService {
         }
         return false
     }
-
 }
