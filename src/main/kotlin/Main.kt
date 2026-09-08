@@ -28,6 +28,7 @@ fun runMenu (){
             3 -> updateNote()
             4 -> deleteNote()
             5 -> archiveNote()
+            6 -> searchNoteContents()
             20 -> save()
             21 -> load()
             0 -> logger.info { "Notes App Exiting" }
@@ -47,6 +48,7 @@ fun mainMenu(): Int {
          > |   3) Update a note             |
          > |   4) Delete a note             |
          > |   5) Archive a note            |
+         > |   6) Search note contents      |
          > ----------------------------------
          > |   20) Save notes               |
          > |   21) Load notes               |
@@ -128,6 +130,13 @@ fun archiveNote(){
         println("Archived")
     else
         println("Not found")
+}
+
+fun searchNoteContents() {
+    val content = readNextLine("Enter search contents: ")
+    if (content != ""){
+        noteService.searchNotesByContent(content).forEach {println(it)}
+    }
 }
 
 fun save() {

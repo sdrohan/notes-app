@@ -98,6 +98,12 @@ class NoteService(serializerType: Serializer){
             .filter { note -> note.category.equals(category, ignoreCase = true) }
             .toList()
 
+    fun searchNotesByContent(content: String): List<Note> = notes
+        .stream()
+        .filter { note -> ((note.title.contains(content, ignoreCase = true)
+                       || (note.body.contains(content, ignoreCase = true))))}
+        .toList()
+
     fun load() {
         val array = serializer.read(Array<Note>::class.java)
         notes = array.toCollection(ArrayList())
