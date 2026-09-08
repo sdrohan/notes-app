@@ -2,6 +2,7 @@ package service
 
 import model.Note
 import persistence.Serializer
+import kotlin.streams.toList
 import kotlin.text.category
 
 class NoteService(serializerType: Serializer){
@@ -82,41 +83,20 @@ class NoteService(serializerType: Serializer){
             .toInt()
     }
 
-    fun getActiveNotes(): List<Note> {
-        val result = ArrayList<Note>()
+    fun getActiveNotes(): List<Note>
+        = notes.stream()
+            .filter { note -> !note.isArchived }
+            .toList()
 
-        for (note in notes) {
-            if (!note.isArchived) {
-                result.add(note)
-            }
-        }
+    fun getArchivedNotes(): List<Note> = notes
+            .stream()
+            .filter { note -> note.isArchived }
+            .toList()
 
-        return result
-    }
-
-    fun getArchivedNotes(): List<Note> {
-        val result = ArrayList<Note>()
-
-        for (note in notes) {
-            if (note.isArchived) {
-                result.add(note)
-            }
-        }
-
-        return result
-    }
-
-    fun getNotesByCategory(category: String): List<Note> {
-        val result = ArrayList<Note>()
-
-        for (note in notes) {
-            if (note.category.equals(category, ignoreCase = true)) {
-                result.add(note)
-            }
-        }
-
-        return result
-    }
+    fun getNotesByCategory(category: String): List<Note>
+        = notes.stream()
+            .filter { note -> note.category.equals(category, ignoreCase = true) }
+            .toList()
 
     fun load() {
         val array = serializer.read(Array<Note>::class.java)

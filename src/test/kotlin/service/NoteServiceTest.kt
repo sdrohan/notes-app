@@ -159,6 +159,63 @@ class NoteServiceTest {
         }
 
         @Test
+        fun `getArchivedNotes returns only archived notes`() {
+            populatedNoteService.archiveNote(note2.id)
+            populatedNoteService.archiveNote(note4.id)
+
+            val archivedList = populatedNoteService.getArchivedNotes()
+
+            assertEquals(2, archivedList.size)
+            assertTrue(archivedList.all { it.isArchived })
+        }
+
+        @Test
+        fun `getArchivedNotes returns empty list when no notes are stored`() {
+            val archivedList = emptyNoteService.getArchivedNotes()
+
+            assertTrue(archivedList.isEmpty())
+        }
+
+        @Test
+        fun `getArchivedNotes returns empty list when no notes are archived`() {
+            // All notes in this service are active initially
+            emptyNoteService.addNote(note1)
+            emptyNoteService.addNote(note3)
+
+            val archivedList = emptyNoteService.getArchivedNotes()
+
+            assertTrue(archivedList.isEmpty())
+        }
+
+        @Test
+        fun `getArchivedNotes returns all notes when all are archived`() {
+            populatedNoteService.archiveNote(note1.id)
+            populatedNoteService.archiveNote(note2.id)
+            populatedNoteService.archiveNote(note3.id)
+            populatedNoteService.archiveNote(note4.id)
+
+            val archivedList = populatedNoteService.getArchivedNotes()
+
+            assertEquals(4, archivedList.size)
+            assertTrue(archivedList.all { it.isArchived })
+        }
+
+        @Test
+        fun `getArchivedNotes preserves correct count and content`() {
+            populatedNoteService.archiveNote(note2.id)
+            populatedNoteService.archiveNote(note4.id)
+
+            val archivedList = populatedNoteService.getArchivedNotes()
+
+            assertEquals(2, archivedList.size)
+
+            assertTrue(archivedList.contains(note2))
+            assertTrue(archivedList.contains(note4))
+            assertFalse(archivedList.contains(note1))
+            assertFalse(archivedList.contains(note3))
+        }
+
+        @Test
         fun `getNotesByCategory handles empty list`() {
             val result = emptyNoteService.getNotesByCategory("Work")
             assertTrue(result.isEmpty())
