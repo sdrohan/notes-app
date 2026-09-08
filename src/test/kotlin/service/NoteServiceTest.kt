@@ -11,13 +11,13 @@ import java.io.File
 
 class NoteServiceTest {
 
-    private lateinit var emptyNoteService: NoteService
-    private lateinit var populatedNoteService: NoteService
     private lateinit var note1: Note
     private lateinit var note2: Note
     private lateinit var note3: Note
     private lateinit var note4: Note
     private lateinit var note5: Note
+    private lateinit var emptyNoteService: NoteService
+    private lateinit var populatedNoteService: NoteService
 
     @BeforeEach
     fun setUp() {
