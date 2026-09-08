@@ -462,6 +462,85 @@ class NoteServiceTest {
     }
 
     @Nested
+    inner class SearchNotes {
+
+        @Test
+        fun `searchNotesByContent returns notes containing search text in title`() {
+            val result = populatedNoteService.searchNotesByContent("Test1")
+
+            assertEquals(1, result.size)
+            assertTrue(result.contains(note1))
+        }
+
+        @Test
+        fun `searchNotesByContent returns notes containing search text in body`() {
+            val result = populatedNoteService.searchNotesByContent("Body2")
+
+            assertEquals(1, result.size)
+            assertTrue(result.contains(note2))
+        }
+
+        @Test
+        fun `searchNotesByContent is case insensitive`() {
+            val result = populatedNoteService.searchNotesByContent("test1")
+
+            assertEquals(1, result.size)
+            assertTrue(result.contains(note1))
+        }
+
+        @Test
+        fun `searchNotesByContent returns multiple matching notes`() {
+            val result = populatedNoteService.searchNotesByContent("Test")
+
+            assertEquals(4, result.size)
+            assertTrue(result.contains(note1))
+            assertTrue(result.contains(note2))
+            assertTrue(result.contains(note3))
+            assertTrue(result.contains(note4))
+        }
+
+        @Test
+        fun `searchNotesByContent returns empty list when no notes match`() {
+            val result = populatedNoteService.searchNotesByContent("xyz")
+            assertTrue(result.isEmpty())
+        }
+
+        @Test
+        fun `searchNotesByContent returns empty list when service is empty`() {
+            val result = emptyNoteService.searchNotesByContent("Test")
+            assertTrue(result.isEmpty())
+        }
+
+        @Test
+        fun `searchNotesByContent finds content in either title or body`() {
+            val result = populatedNoteService.searchNotesByContent("Body3")
+
+            assertEquals(1, result.size)
+            assertTrue(result.contains(note3))
+        }
+
+        @Test
+        fun `searchNotesByContent finds partial match in title`() {
+            val result = populatedNoteService.searchNotesByContent("Tes")
+
+            assertEquals(4, result.size)
+            assertTrue(result.contains(note1))
+            assertTrue(result.contains(note2))
+            assertTrue(result.contains(note3))
+            assertTrue(result.contains(note4))
+        }
+
+        @Test
+        fun `searchNotesByContent finds partial match in body`() {
+            val result = populatedNoteService.searchNotesByContent("ody3")
+
+            assertEquals(1, result.size)
+            assertTrue(result.contains(note3))
+        }
+
+    }
+
+    @Nested
     inner class PersistenceTests {
 
         @Test
@@ -502,6 +581,7 @@ class NoteServiceTest {
             assertEquals(storingNotes.findNoteById(2), loadedNotes.findNoteById(2))
         }
     }
+
 
 }
 
