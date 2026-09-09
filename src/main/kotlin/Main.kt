@@ -6,6 +6,8 @@ import service.NoteService
 import utils.readNextBoolean
 import utils.readNextInt
 import utils.readNextLine
+import utils.readValidCategory
+import utils.readValidPriority
 import java.io.File
 
 //val noteService = NoteService(XMLSerializer(File("notes.xml")))
@@ -62,8 +64,8 @@ fun mainMenu(): Int {
 fun addNote(){
     val title = readNextLine("Title: ")
     val body = readNextLine("Body: ")
-    val priority = readNextInt("Priority (1-5): ")
-    val category = readNextLine("Category: ")
+    val priority = readValidPriority("Priority (1-5): ")
+    val category = readValidCategory("Category: ")
 
     noteService.addNote(
         Note(0, title, body, priority, category, false)
@@ -100,8 +102,8 @@ fun updateNote() {
     val id = readNextInt("Enter ID: ")
     val title = readNextLine("Title: ")
     val body = readNextLine("Body: ")
-    val priority = readNextInt("Priority (1-5): ")
-    val category = readNextLine("Category: ")
+    val priority = readValidPriority("Priority (1-5): ")
+    val category = readValidCategory("Category: ")
     val isArchived = readNextBoolean("Archive the note (y/n): ")
 
     val updated = Note(id, title, body, priority, category, isArchived)
