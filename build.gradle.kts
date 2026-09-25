@@ -1,5 +1,9 @@
 plugins {
     kotlin("jvm") version "2.3.21"
+    // Plugin for Dokka - KDoc generating tool
+    id("org.jetbrains.dokka") version "2.2.0"
+    jacoco
+    application
 }
 
 group = "ie.setu"
@@ -19,6 +23,8 @@ dependencies {
     implementation("tools.jackson.core:jackson-databind:3.1.4")
     implementation("tools.jackson.module:jackson-module-kotlin:3.1.4")
     implementation("tools.jackson.dataformat:jackson-dataformat-xml:3.1.4")
+    // For generating a Dokka Site from KDoc
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.2.0")
 }
 
 kotlin {
@@ -27,4 +33,24 @@ kotlin {
 
 tasks.test {
     useJUnitPlatform()
+    //report is always generated after tests run
+    finalizedBy(tasks.jacocoTestReport)
 }
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
