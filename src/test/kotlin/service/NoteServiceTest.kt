@@ -1,16 +1,17 @@
 package service
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
 import model.Note
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
 
 class NoteServiceTest {
-
     private lateinit var note1: Note
     private lateinit var note2: Note
     private lateinit var note3: Note
@@ -44,7 +45,6 @@ class NoteServiceTest {
 
     @Nested
     inner class AddNotes {
-
         @Test
         fun `add note to an empty service increases size correctly`() {
             assertEquals(0, emptyNoteService.getNotes().size)
@@ -93,8 +93,7 @@ class NoteServiceTest {
     }
 
     @Nested
-    inner class GetNotes{
-
+    inner class GetNotes {
         @Test
         fun `getNotes returns an empty list when service is empty`() {
             assertTrue(emptyNoteService.getNotes().isEmpty())
@@ -235,20 +234,20 @@ class NoteServiceTest {
         }
 
         @Test
-        fun `getNotesByCategory returns no notes when the category is not in the list` () {
+        fun `getNotesByCategory returns no notes when the category is not in the list`() {
             val result = populatedNoteService.getNotesByCategory("Invalid Category")
             assertTrue(result.isEmpty())
         }
 
         @Test
-        fun `getNotesByCategory returns matching categories regardless of case` () {
+        fun `getNotesByCategory returns matching categories regardless of case`() {
             val result = populatedNoteService.getNotesByCategory("home")
             assertEquals(1, result.size)
             assertTrue(result.all { it.category == "Home" })
         }
 
         @Test
-        fun `getNotesByCategory excludes notes whose categories do not match` () {
+        fun `getNotesByCategory excludes notes whose categories do not match`() {
             assertEquals(4, populatedNoteService.numberOfNotes())
 
             val result = populatedNoteService.getNotesByCategory("Work")
@@ -259,12 +258,10 @@ class NoteServiceTest {
             assertFalse(result.contains(note3))
             assertFalse(result.contains(note4))
         }
-
     }
 
     @Nested
-    inner class DeleteNotes{
-
+    inner class DeleteNotes {
         @Test
         fun `deleting an existing note returns true`() {
             assertTrue(populatedNoteService.deleteNote(1))
@@ -303,33 +300,60 @@ class NoteServiceTest {
     }
 
     @Nested
-    inner class UpdateNotes{
-
+    inner class UpdateNotes {
         @Test
         fun `updating an existing note returns true`() {
-            val updated = Note(1, "Updated Title", "Updated Body",
-                               5, "Work", true)
+            val updated =
+                Note(
+                    1,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Work",
+                    true,
+                )
             assertTrue(populatedNoteService.updateNote(1, updated))
         }
 
         @Test
         fun `updating a non existing note returns false`() {
-            val updated = Note(999, "Updated Title", "Updated Body",
-                               5, "Work", false)
+            val updated =
+                Note(
+                    999,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Work",
+                    false,
+                )
             assertFalse(populatedNoteService.updateNote(999, updated))
         }
 
         @Test
         fun `updating in an empty service returns false`() {
-            val updated = Note(1, "Updated Title", "Updated Body",
-                5, "Work", false)
+            val updated =
+                Note(
+                    1,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Work",
+                    false,
+                )
             assertFalse(emptyNoteService.updateNote(1, updated))
         }
 
         @Test
         fun `updating a note changes its stored values`() {
-            val updated = Note(1, "Updated Title", "Updated Body",
-                5, "Personal", true)
+            val updated =
+                Note(
+                    1,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Personal",
+                    true,
+                )
 
             populatedNoteService.updateNote(1, updated)
 
@@ -346,8 +370,15 @@ class NoteServiceTest {
         fun `updating a note does not change the number of notes`() {
             val sizeBefore = populatedNoteService.getNotes().size
 
-            val updated = Note(1, "Updated Title", "Updated Body",
-                               5, "Personal", true)
+            val updated =
+                Note(
+                    1,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Personal",
+                    true,
+                )
             populatedNoteService.updateNote(1, updated)
 
             assertEquals(sizeBefore, populatedNoteService.getNotes().size)
@@ -355,18 +386,23 @@ class NoteServiceTest {
 
         @Test
         fun `updating an existing note preserves its id`() {
-            val updated = Note(99, "Updated Title", "Updated Body",
-                               5, "Work", false)
+            val updated =
+                Note(
+                    99,
+                    "Updated Title",
+                    "Updated Body",
+                    5,
+                    "Work",
+                    false,
+                )
 
             populatedNoteService.updateNote(1, updated)
             assertEquals(1, populatedNoteService.findNoteById(1)?.id)
         }
-
     }
 
     @Nested
-    inner class CountingNotes{
-
+    inner class CountingNotes {
         @Test
         fun `numberOfNotes returns correct total count for populated service`() {
             assertEquals(4, populatedNoteService.numberOfNotes())
@@ -440,14 +476,14 @@ class NoteServiceTest {
     @Nested
     inner class ArchiveNotes {
         @Test
-        fun `archiving a note that does not exist returns false`(){
+        fun `archiving a note that does not exist returns false`() {
             assertFalse(populatedNoteService.archiveNote(6))
             assertFalse(populatedNoteService.archiveNote(-1))
             assertFalse(emptyNoteService.archiveNote(0))
         }
 
         @Test
-        fun `archiving an already archived note returns false`(){
+        fun `archiving an already archived note returns false`() {
             populatedNoteService.findNoteById(2)!!.isArchived = true
             assertTrue(populatedNoteService.findNoteById(2)!!.isArchived)
             assertFalse(populatedNoteService.archiveNote(2))
@@ -463,7 +499,6 @@ class NoteServiceTest {
 
     @Nested
     inner class SearchNotes {
-
         @Test
         fun `searchNotesByContent returns notes containing search text in title`() {
             val result = populatedNoteService.searchNotesByContent("Test1")
@@ -537,23 +572,21 @@ class NoteServiceTest {
             assertEquals(1, result.size)
             assertTrue(result.contains(note3))
         }
-
     }
 
     @Nested
     inner class PersistenceTests {
-
         @Test
         fun `saving and loading an empty collection in XML doesn't crash app`() {
             // Saving an empty notes.XML file.
             val storingNotes = NoteService(XMLSerializer(File("notes.xml")))
             storingNotes.store()
 
-            //Loading the empty notes.xml file into a new object
+            // Loading the empty notes.xml file into a new object
             val loadedNotes = NoteService(XMLSerializer(File("notes.xml")))
             loadedNotes.load()
 
-            //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+            // Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
             assertEquals(0, storingNotes.numberOfNotes())
             assertEquals(0, loadedNotes.numberOfNotes())
             assertEquals(storingNotes.numberOfNotes(), loadedNotes.numberOfNotes())
@@ -568,11 +601,11 @@ class NoteServiceTest {
             storingNotes.addNote(note3)
             storingNotes.store()
 
-            //Loading notes.xml into a different collection
+            // Loading notes.xml into a different collection
             val loadedNotes = NoteService(XMLSerializer(File("notes.xml")))
             loadedNotes.load()
 
-            //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+            // Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
             assertEquals(3, storingNotes.numberOfNotes())
             assertEquals(3, loadedNotes.numberOfNotes())
             assertEquals(storingNotes.numberOfNotes(), loadedNotes.numberOfNotes())
@@ -581,7 +614,4 @@ class NoteServiceTest {
             assertEquals(storingNotes.findNoteById(2), loadedNotes.findNoteById(2))
         }
     }
-
-
 }
-

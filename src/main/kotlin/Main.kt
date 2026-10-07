@@ -1,7 +1,6 @@
 import io.github.oshai.kotlinlogging.KotlinLogging
 import model.Item
 import model.Note
-import persistence.JSONSerializer
 import persistence.XMLSerializer
 import service.ItemService
 import service.NoteItemService
@@ -14,22 +13,23 @@ import utils.readValidPriority
 import java.io.File
 
 val noteService = NoteService(XMLSerializer(File("notes.xml")))
-//val noteService = NoteService(JSONSerializer(File("notes.json")))
+
+// val noteService = NoteService(JSONSerializer(File("notes.json")))
 val itemService = ItemService(XMLSerializer(File("items.xml")))
 val noteItemService = NoteItemService(XMLSerializer(File("noteitems.xml")))
 
 private val logger = KotlinLogging.logger {}
 
-fun main(){
+fun main() {
     logger.info { "Notes App Starting" }
     runMenu()
 }
 
-fun runMenu (){
-    var input : Int
+fun runMenu() {
+    var input: Int
     do {
         input = mainMenu()
-        when(input) {
+        when (input) {
             1 -> addNote()
             2 -> listNotes()
             3 -> updateNote()
@@ -51,7 +51,8 @@ fun runMenu (){
 }
 
 fun mainMenu(): Int {
-    print(""" 
+    print(
+        """ 
          > ----------------------------------
          > |        NOTE KEEPER APP         |
          > ----------------------------------
@@ -80,45 +81,46 @@ fun mainMenu(): Int {
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
-         > """.trimMargin(">"))
+         > """.trimMargin(">"),
+    )
     return readNextInt("==>> ")
 }
 
-fun addNote(){
+fun addNote() {
     val title = readNextLine("Title: ")
     val body = readNextLine("Body: ")
     val priority = readValidPriority("Priority (1-5): ")
     val category = readValidCategory("Category: ")
 
     noteService.addNote(
-        Note(0, title, body, priority, category, false)
+        Note(0, title, body, priority, category, false),
     )
 
     println("Note added")
 }
 
 fun listNotes() {
-    if (noteService.numberOfNotes() > 0){
-        val option = readNextInt(
-            """
+    if (noteService.numberOfNotes() > 0) {
+        val option =
+            readNextInt(
+                """
                   > --------------------------------
                   > |   1) View ALL notes          |
                   > |   2) View ACTIVE notes       |
                   > |   3) View ARCHIVED notes     |
                   > --------------------------------
-         > ==>> """.trimMargin(">")
-        )
+         > ==>> """.trimMargin(">"),
+            )
 
         when (option) {
-            1 -> noteService.getNotes().forEach {println(it)}
-            2 -> noteService.getActiveNotes().forEach {println(it)}
-            3 -> noteService.getArchivedNotes().forEach {println(it)}
+            1 -> noteService.getNotes().forEach { println(it) }
+            2 -> noteService.getActiveNotes().forEach { println(it) }
+            3 -> noteService.getArchivedNotes().forEach { println(it) }
             else -> println("Invalid option entered: $option")
         }
     } else {
         println("Option Invalid - No notes stored")
     }
-
 }
 
 fun updateNote() {
@@ -148,19 +150,20 @@ fun deleteNote() {
     }
 }
 
-fun archiveNote(){
+fun archiveNote() {
     noteService.getActiveNotes().forEach { println(it) }
     val id = readNextInt("Enter ID of Note to be Archived: ")
-    if (noteService.archiveNote(id))
+    if (noteService.archiveNote(id)) {
         println("Archived")
-    else
+    } else {
         println("Not found")
+    }
 }
 
 fun searchNoteContents() {
     val content = readNextLine("Enter search contents: ")
-    if (content != ""){
-        noteService.searchNotesByContent(content).forEach {println(it)}
+    if (content != "") {
+        noteService.searchNotesByContent(content).forEach { println(it) }
     }
 }
 
@@ -169,14 +172,12 @@ fun addItemToNote() {
     if (noteService.findNoteById(noteId) != null) {
         val itemId = readNextInt("Enter Item ID: ")
         if (itemService.findItemById(itemId) != null) {
-            if (noteItemService.addItemToNote(noteId, itemId)){
+            if (noteItemService.addItemToNote(noteId, itemId)) {
                 println("Added")
-            }
-            else{
+            } else {
                 println("Item is already added to Note")
             }
-        }
-        else{
+        } else {
             println("Item not found")
         }
     } else {
@@ -188,20 +189,19 @@ fun viewItemsForNote() {
     val id = readNextInt("Enter Note ID: ")
     val itemsIds = noteItemService.getItemIdsForNote(id)
     if (itemsIds.isNotEmpty()) {
-        itemsIds.forEach { itemId -> println(itemService.findItemById(itemId))}
+        itemsIds.forEach { itemId -> println(itemService.findItemById(itemId)) }
     }
 }
 
-
-//-----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //   Items Skeleton Code
-//-----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 fun addItem() {
     val description = readNextLine("Description: ")
     val isCompleted = readNextBoolean("Completed (y/n): ")
 
     itemService.addItem(
-        Item(0, description, isCompleted)
+        Item(0, description, isCompleted),
     )
     println("Item added")
 }
@@ -221,8 +221,9 @@ fun searchItemContents() {
     }
 }
 
-fun itemCountReport(){
-    println("""
+fun itemCountReport() {
+    println(
+        """
         | ----------------------
         | ITEM REPORT
         | ----------------------
@@ -230,12 +231,13 @@ fun itemCountReport(){
         | Completed Items:  ${itemService.numberOfCompletedItems()}
         | Incomplete Items: ${itemService.numberOfIncompleteItems()}
         | ----------------------        
-    """.trimIndent())
+        """.trimIndent(),
+    )
 }
 
-//-----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //   Persistence
-//-----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 
 fun save() {
     try {

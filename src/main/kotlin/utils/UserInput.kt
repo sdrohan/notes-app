@@ -64,4 +64,3 @@ fun readNextBoolean(prompt: String = ""): Boolean {
         else -> false
     }
 }
-

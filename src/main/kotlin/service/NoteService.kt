@@ -10,12 +10,14 @@ import persistence.Serializer
 * @property serializer A serializer instance for reading and writing the notes.
 * @constructor Initializes the NoteService with the specified [serializerType].
 */
-class NoteService(serializerType: Serializer){
-
+class NoteService(
+    serializerType: Serializer,
+) {
     private var serializer: Serializer = serializerType
 
     private var notes = ArrayList<Note>()
     private var lastId = 0
+
     private fun getId(): Int = lastId++
 
     /**
@@ -30,15 +32,14 @@ class NoteService(serializerType: Serializer){
         notes.add(note)
     }
 
-    fun getNotes(): List<Note> {
-        return notes
-    }
+    fun getNotes(): List<Note> = notes
 
-    fun deleteNote(id: Int): Boolean {
-        return notes.removeIf { it.id == id }
-    }
+    fun deleteNote(id: Int): Boolean = notes.removeIf { it.id == id }
 
-    fun updateNote(id: Int, updated: Note): Boolean {
+    fun updateNote(
+        id: Int,
+        updated: Note,
+    ): Boolean {
         val index = notes.indexOfFirst { it.id == id }
         if (index != -1) {
             updated.id = id
@@ -58,44 +59,43 @@ class NoteService(serializerType: Serializer){
         return false
     }
 
-    fun findNoteById(id: Int): Note? {
-        return notes.find { it.id == id }
-    }
+    fun findNoteById(id: Int): Note? = notes.find { it.id == id }
 
-    fun numberOfNotes(): Int {
-        return notes.size
-    }
+    fun numberOfNotes(): Int = notes.size
 
-    fun numberOfArchivedNotes()
-         = notes.count { note: Note -> note.isArchived }
+    fun numberOfArchivedNotes() = notes.count { note: Note -> note.isArchived }
 
-    fun numberOfActiveNotes()
-         = notes.count { note: Note -> !note.isArchived }
+    fun numberOfActiveNotes() = notes.count { note: Note -> !note.isArchived }
 
-    fun numberOfNotesByCategory(category: String)
-         = notes.count { note: Note -> note.category == category }
+    fun numberOfNotesByCategory(category: String) = notes.count { note: Note -> note.category == category }
 
-    fun numberOfNotesByPriority(priority: Int)
-         = notes.count { note: Note -> note.priority == priority }
+    fun numberOfNotesByPriority(priority: Int) = notes.count { note: Note -> note.priority == priority }
 
     fun getActiveNotes() = notes.filter { note -> !note.isArchived }
 
     fun getArchivedNotes() = notes.filter { note -> note.isArchived }
 
-    fun getNotesByCategory(category: String) = notes
+    fun getNotesByCategory(category: String) =
+        notes
             .filter { note -> note.category.equals(category, ignoreCase = true) }
 
-
-    fun searchNotesByContent(content: String) = notes
-        .filter { note -> ((note.title.contains(content, ignoreCase = true)
-                       || (note.body.contains(content, ignoreCase = true))))}
+    fun searchNotesByContent(content: String) =
+        notes
+            .filter { note ->
+                (
+                    (
+                        note.title.contains(content, ignoreCase = true) ||
+                            (note.body.contains(content, ignoreCase = true))
+                    )
+                )
+            }
 
     fun load() {
         val array = serializer.read(Array<Note>::class.java)
         notes = array.toCollection(ArrayList())
     }
 
-    //@Throws(Exception::class)
+    // @Throws(Exception::class)
     fun store() {
         serializer.write(notes)
     }
