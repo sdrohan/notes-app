@@ -63,9 +63,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it 
       - uses: actions/checkout@v4
       
-      # Runs the Gradle dokkaHtml task
+      # Runs the Gradle dokkaGenerateHtml task
       - name: Dokka with Gradle
-        run: ./gradlew dokkaHtml
+        run: ./gradlew dokkaGenerateHtml
       
       # Builds a zip file with the KDoc generated website in it 
       - name: Archive KDoc Documentation
